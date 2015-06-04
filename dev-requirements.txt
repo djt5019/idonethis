@@ -1,0 +1,10 @@
+-r requirements.txt
+-r test-requirements.txt
+
+detox
+coverage
+flake8
+pylint
+Sphinx
+sphinx-rtd-theme
+tox
