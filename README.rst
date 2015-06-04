@@ -1,17 +1,84 @@
-idoneit-cli
+iDoneIt-cli
 ===========
 
 |Version| |Downloads| |Status| |Coverage| |License|
 
-A simple Python CLI for interacting with iDoneIt.
+A simple, small, and opinionated Python CLI for interacting with iDoneIt in a
+way that suits for my workflow.
+
+This CLI allows you to record your grandiose accomplishments of the day did
+today as well as see what others on your team did.
+
+
+Record what you've done
+-----------------------
+
+::
+
+  $ idoneit -m 'Holy smoke I did it!' --token 'my-auth-token' --team 'backend'
+  Recorded what you've done, keep up the good work!
+
+  $ echo 'Holy smoke I did it!' | idoneit --token 'my-auth-token' --team 'backend'
+  Recorded what you've done, keep up the good work!
+
+
+Or if you're feeling fancy and want to use your ``$EDITOR``
+
+::
+
+  $ idoneit --token 'my-auth-token' --team 'backend'
+  Recorded what you've done, keep up the good work!
+
+
+See what others have done
+-------------------------
+
+::
+
+  $ date
+  Thu Jun  4 19:10:11 EDT 2015
+
+  $ idoneit summary --token 'my-auth-token' --team 'backend'
+  The "backend" team did this on 2015-06-04
+
+  DanT
+  ----
+
+  * Made a PR on something
+  * Created a little CLI for stuff
+
+  OtherGuy
+  --------
+
+  * Fixed all the things
+
+
+Or if you want to see who was slacking yesterday
+
+::
+
+  $ idoneit summary --date yesterday --token 'my-auth-token' --team 'backend'
+  The "backend" team did this on 2015-06-04
+
+  DanT
+  ----
+
+  * Thought about doing work, then didn't
+
+  OtherGuy
+  --------
+
+  * Planning to fix all the things
 
 
 Installation
 ------------
 
+You can install this off of PyPI using PIP.
+
 ::
 
-    pip install idoneit-cli
+    $ pip install idoneit-cli
 
 
 .. include:: contributing.rst
