@@ -4,7 +4,7 @@ Contributing
 If you want to help make this project better you are officially an awesome
 person.
 
-`Pull requests <https://github.com/djt5019/idoneit-cli/pulls>`_ or `Github issues <https://github.com/djt5019/idoneit-cli/issues>`_ are always welcome.  If you want to contribute a patch please do the following.
+`Pull requests <https://github.com/djt5019/idonethis/pulls>`_ or `Github issues <https://github.com/djt5019/idonethis/issues>`_ are always welcome.  If you want to contribute a patch please do the following.
 
 1. Fork this repo and create a new branch
 2. Do work

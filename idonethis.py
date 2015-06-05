@@ -17,7 +17,8 @@ parser = argparse.ArgumentParser()
 parser.add_argument('-m', '--message', help='Content of your done')
 parser.add_argument('--team', required=True, help='Your team')
 parser.add_argument('--token', required=True,
-                    help='Your authorization token: see https://idonethis.com/api/token/')
+                    help=('Your authorization token: '
+                          'see https://idonethis.com/api/token/'))
 
 
 def get_done_text():
@@ -29,14 +30,14 @@ def get_done_text():
 
     with tempfile.NamedTemporaryFile(suffix='.tmp', delete=False) as temp:
         filename = temp.name
-        temp.write('Today I did... ')
+        temp.write(b'Today I did... ')
         temp.flush()
         subprocess.call([EDITOR, temp.name])
 
     with open(filename) as updated_temp:
         data = updated_temp.read()
 
-    temp.unlink(filename)
+    os.unlink(filename)
     return data
 
 
@@ -65,25 +66,27 @@ def submit_done(session, team, done):
         raise ValueError(payload['detail'])
 
 
-def main(args):
+def main():
     """The main entry point for the application."""
+    args = parser.parse_args()
     token = args.token
     team = args.team
     done_text = args.message
 
     # Seed the Authorization headers for all subsequent requests
     session = requests.Session()
-    session.headers['Authorization'] = 'Token {}'.format(args.token)
+    session.headers['Authorization'] = 'Token {}'.format(token)
 
     if not done_text:
         done_text = get_done_text()
 
-    submit_done(session, team, done_text)
+    try:
+        submit_done(session, team, done_text)
+    except Exception as exception:
+        exit("Failed to record what you've done: {}".format(exception))
+
+    print("Recorded what you've done, keep up the good work!")
 
 
 if __name__ == '__main__':  # pragma: nocover
-    try:
-        main(parser.parse_args())
-        print("Recorded what you've done, keep up the good work!")
-    except Exception as exception:
-        exit("Failed to record what you've done: {}".format(exception))
+    main()

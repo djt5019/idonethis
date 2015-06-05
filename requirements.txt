@@ -1,3 +1,7 @@
-parsedatetime
+coverage
+detox
+flake8
+mock
+nose
 requests
-docopt
+betamax
