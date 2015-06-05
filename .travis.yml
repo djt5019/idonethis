@@ -1,0 +1,24 @@
+language: python
+python:
+- pypy
+- 2.7
+- 3.2
+- 3.3
+- 3.4
+install:
+- pip install -r requirements.txt
+- pip install -e .
+- pip install coveralls
+script: nosetests
+after_success:
+- coveralls
+deploy:
+  provider: pypi
+  user: dantracy
+  distributions: sdist bdist_wheel
+  on:
+    python: 2.7
+    tags: true
+    all_branches: true
+  password:
+    secure: ZfLY5ne6nHHxfQUx/2hj5SVwzYPCPRj54BmuTLEuqRPInxgmKSlAB8IWAY5xSTf3MeyFV9x/aNieSlZYMeR6IGm55OVUAPuPfSAi6KJ2aGxv/XCp6sh1+A3AvlkI4/UVgEYbRVGhqNfLc/vVhPbXIAxesUxdhZPODKk8varz0domOynyTPqqXACt0bmr445+Lxe4ZhkJuNcsVp0nWgQ4MVykAJDVi4FXAxSnp4MTmfNs8PjoFFea9M8bC3r8Juq2bLYRLTX9mYaInxV9S/A74oroJeHEm0tGu7HOrUWvERlGjs7SzakmUvE6S58IyYHAFFYsA0d5JCqTDzbe2RqskBiJ/ju79JFxaDpvm5pvi2XgFqypKOzjaa+ibfjEmOBgdZMDF5X+UHFcHp/eIwNBhhu2tXsWq5bxMPQ5LMuhULljTg49B6e1yFY6ovZzdskPv17KuU3p4cIpvvpBUVTn3YvFVBSLr040JQPn3TCMs+H/Fb1MPXpVzWHvVmO0ARE9iw7lpX48zkMuTUQhq3qAe2VX0s5Ob49mzbqB0Em1llN/JH31dDp95k1hlnDAV8L8Ir3pd47j53ZMRLyUbbboAL4TqpqN/4UG4vM4+jln9TJN/CB0BHAoPyYai21PiH81vxFfnS5HURRb6Us1pOKSmcFNSmCl5xREAZCHA4Lforg=
