@@ -7,10 +7,17 @@ import subprocess
 import sys
 import tempfile
 
+import argparse
 import requests
 
 
 ROOT_URI = 'https://idonethis.com/api/v0.1/dones/'
+
+parser = argparse.ArgumentParser()
+parser.add_argument('-m', '--message', help='Content of your done')
+parser.add_argument('--team', required=True, help='Your team')
+parser.add_argument('--token', required=True,
+                    help='Your authorization token: see https://idonethis.com/api/token/')
 
 
 def get_done_text():
@@ -56,3 +63,27 @@ def submit_done(session, team, done):
         raise ValueError("You aren't a part of the '{}' team".format(team))
     else:
         raise ValueError(payload['detail'])
+
+
+def main(args):
+    """The main entry point for the application."""
+    token = args.token
+    team = args.team
+    done_text = args.message
+
+    # Seed the Authorization headers for all subsequent requests
+    session = requests.Session()
+    session.headers['Authorization'] = 'Token {}'.format(args.token)
+
+    if not done_text:
+        done_text = get_done_text()
+
+    submit_done(session, team, done_text)
+
+
+if __name__ == '__main__':  # pragma: nocover
+    try:
+        main(parser.parse_args())
+        print("Recorded what you've done, keep up the good work!")
+    except Exception as exception:
+        exit("Failed to record what you've done: {}".format(exception))
