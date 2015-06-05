@@ -1,0 +1,44 @@
+{
+    "http_interactions": [
+        {
+            "request": {
+                "body": {
+                    "string": "{\"raw_text\": \"done\", \"team\": \"team\"}",
+                    "encoding": "utf-8"
+                },
+                "headers": {
+                    "Content-Length": "36",
+                    "Content-Type": "application/json",
+                    "Authorization": "Token hunter2"
+                },
+                "method": "POST",
+                "uri": "https://idonethis.com/api/v0.1/dones/"
+            },
+            "response": {
+                "body": {
+                    "string": "{\"detail\": \"Invalid token\", \"ok\": false}",
+                    "encoding": null
+                },
+                "headers": {
+                    "via": "1.1 vegur",
+                    "transfer-encoding": "chunked",
+                    "vary": "Accept, Cookie",
+                    "server": "gunicorn/19.3.0",
+                    "connection": "keep-alive",
+                    "allow": "GET, POST, HEAD, OPTIONS",
+                    "date": "Fri, 05 Jun 2015 01:13:11 GMT",
+                    "x-frame-options": "SAMEORIGIN",
+                    "content-type": "application/json",
+                    "www-authenticate": "Bearer realm=\"api\""
+                },
+                "status": {
+                    "message": "UNAUTHORIZED",
+                    "code": 401
+                },
+                "url": "https://idonethis.com/api/v0.1/dones/"
+            },
+            "recorded_at": "2015-06-05T01:13:11"
+        }
+    ],
+    "recorded_with": "betamax/0.4.2"
+}
