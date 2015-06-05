@@ -36,7 +36,7 @@ def get_done_text():
     with open(filename) as updated_temp:
         data = updated_temp.read()
 
-    temp.unlink(filename)
+    os.unlink(filename)
     return data
 
 
