@@ -7,10 +7,8 @@ import requests
 
 try:
     from unittest import mock
-    from io import StringIO
 except ImportError:
     import mock
-    from cStringIO import StringIO
 
 
 # No requests should come from Travis
@@ -64,4 +62,4 @@ class TestGrabText(unittest.TestCase):
 
     @mock.patch('idoneit.subprocess.call')
     def test_bringing_up_an_editor(self, subprocess_call):
-        self.assertEqual('Today I did...', idoneit.get_done_text())
+        self.assertEqual('Today I did... ', idoneit.get_done_text())
