@@ -1,5 +1,5 @@
-iDoneIt-cli
-===========
+iDoneIt CLI Utility
+===================
 
 |Version| |Downloads| |Status| |Coverage| |License|
 
@@ -78,7 +78,7 @@ You can install this off of PyPI using PIP.
 
 ::
 
-    $ pip install idoneit-cli
+    $ pip install idoneit
 
 
 .. include:: contributing.rst
@@ -119,17 +119,17 @@ MIT
 
 .. _detox: https://testrun.org/tox/
 
-.. |Version| image:: https://badge.fury.io/py/idoneit-cli.svg?
-   :target: http://badge.fury.io/py/idoneit-cli
+.. |Version| image:: https://badge.fury.io/py/idoneit.svg?
+   :target: http://badge.fury.io/py/idoneit
 
-.. |Status| image:: https://travis-ci.org/djt5019/idoneit-cli.svg?branch=master
-   :target: https://travis-ci.org/djt5019/idoneit-cli
+.. |Status| image:: https://travis-ci.org/djt5019/idoneit.svg?branch=master
+   :target: https://travis-ci.org/djt5019/idoneit
 
-.. |Coverage| image:: https://img.shields.io/coveralls/djt5019/idoneit-cli.svg?
-   :target: https://coveralls.io/r/djt5019/idoneit-cli
+.. |Coverage| image:: https://img.shields.io/coveralls/djt5019/idoneit.svg?
+   :target: https://coveralls.io/r/djt5019/idoneit
 
-.. |Downloads| image:: https://pypip.in/d/idoneit-cli/badge.svg?
-   :target: https://pypi.python.org/pypi/idoneit-cli
+.. |Downloads| image:: https://pypip.in/d/idoneit/badge.svg?
+   :target: https://pypi.python.org/pypi/idoneit
 
-.. |License| image:: https://pypip.in/license/idoneit-cli/badge.svg?
-   :target: https://idoneit-cli.readthedocs.org
+.. |License| image:: https://pypip.in/license/idoneit/badge.svg?
+   :target: https://idoneit.readthedocs.org

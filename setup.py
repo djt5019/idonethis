@@ -4,7 +4,7 @@ import sys
 
 from setuptools import setup, find_packages
 
-import idoneit-cli
+import idoneit
 
 
 def read_requirements_file(filename):
@@ -14,9 +14,9 @@ def read_requirements_file(filename):
                 if not line.startswith('#')]
 
 setup(
-    name='idoneit-cli',
+    name='idoneit',
     description='A simple Python CLI for interacting with iDoneIt',
-    version=idoneit-cli.__version__,
+    version=idoneit.__version__,
     packages=find_packages(exclude=['tests', 'tests.*']),
     test_suite='nose.collector',
     include_package_data=True,
@@ -25,7 +25,7 @@ setup(
     tests_require=read_requirements_file('test-requirements.txt'),
     author='Dan Tracy.',
     author_email='djt5019@gmail.com',
-    url='https://github.com/djt5019/idoneit-cli',
+    url='https://github.com/djt5019/idoneit',
     classifiers=[
         'Development Status :: 1 - Planning',
         'Intended Audience :: Developers',
