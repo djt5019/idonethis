@@ -87,8 +87,13 @@ You can install this off of PyPI using PIP.
 Development
 -----------
 
+Python 2.7, 3.2, 3.3, 3.4, and Pypy 2.1 are all supported and integrated
+against.  To run `detox`_ locally you'll need all the interpreters... or you
+can do what I do and throw it over the fence to TravisCI and hope my config
+file hasn't broken again.
+
 1. Create a new virtual environment
-2. Install development requirements from *dev-requirements.txt*
+2. Install development requirements from *requirements.txt*
 3. Run tests  ``nosetests``
 4. `detox`_ is installed and will run the test suite across all supported python platforms
 5. `python setup.py build_sphinx` will generate documentation into *build/sphinx/html*
@@ -99,7 +104,7 @@ TL;DR
 ::
 
     $ virtualenv env
-    $ ./env/bin/pip install -qr dev-requirements.txt
+    $ ./env/bin/pip install -qr requirements.txt
     $ source env/bin/activate
     (env) $ nosetests
     (env) $ python setup.py build_sphinx
