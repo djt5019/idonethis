@@ -29,7 +29,7 @@ def get_done_text():
 
     with tempfile.NamedTemporaryFile(suffix='.tmp', delete=False) as temp:
         filename = temp.name
-        temp.write('Today I did... ')
+        temp.write(b'Today I did... ')
         temp.flush()
         subprocess.call([EDITOR, temp.name])
 
