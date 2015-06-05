@@ -1,13 +1,15 @@
-iDoneIt-cli
-===========
+iDoneThis CLI Utility
+=====================
 
-|Version| |Downloads| |Status| |Coverage| |License|
+|Version| |Documentation| |Status| |Coverage| |License| |GPA|
 
-A simple, small, and opinionated Python CLI for interacting with iDoneIt in a
-way that suits for my workflow.
+A simple, small, and opinionated Python CLI for interacting with the awesome
+iDoneThis service in a way that suits for my workflow.
 
 This CLI allows you to record your grandiose accomplishments of the day did
 today as well as see what others on your team did.
+
+You can find more docs on `ReadTheDocs <http://idonethis.readthedocs.org/en/latest/>`_.
 
 
 Record what you've done
@@ -15,10 +17,10 @@ Record what you've done
 
 ::
 
-  $ idoneit -m 'Holy smoke I did it!' --token 'my-auth-token' --team 'backend'
+  $ idonethis -m 'Holy smoke I did it!' --token 'my-auth-token' --team 'backend'
   Recorded what you've done, keep up the good work!
 
-  $ echo 'Holy smoke I did it!' | idoneit --token 'my-auth-token' --team 'backend'
+  $ echo 'Holy smoke I did it!' | idonethis --token 'my-auth-token' --team 'backend'
   Recorded what you've done, keep up the good work!
 
 
@@ -26,7 +28,7 @@ Or if you're feeling fancy and want to use your ``$EDITOR``
 
 ::
 
-  $ idoneit --token 'my-auth-token' --team 'backend'
+  $ idonethis --token 'my-auth-token' --team 'backend'
   Recorded what you've done, keep up the good work!
 
 
@@ -38,7 +40,7 @@ See what others have done
   $ date
   Thu Jun  4 19:10:11 EDT 2015
 
-  $ idoneit summary --token 'my-auth-token' --team 'backend'
+  $ idonethis summary --token 'my-auth-token' --team 'backend'
   The "backend" team did this on 2015-06-04
 
   DanT
@@ -57,7 +59,7 @@ Or if you want to see who was slacking yesterday
 
 ::
 
-  $ idoneit summary --date yesterday --token 'my-auth-token' --team 'backend'
+  $ idonethis summary --date yesterday --token 'my-auth-token' --team 'backend'
   The "backend" team did this on 2015-06-04
 
   DanT
@@ -78,7 +80,7 @@ You can install this off of PyPI using PIP.
 
 ::
 
-    $ pip install idoneit-cli
+    $ pip install idonethis
 
 
 .. include:: contributing.rst
@@ -87,8 +89,13 @@ You can install this off of PyPI using PIP.
 Development
 -----------
 
+Python 2.7, 3.2, 3.3, 3.4, and Pypy 2.1 are all supported and integrated
+against.  To run `detox`_ locally you'll need all the interpreters... or you
+can do what I do and throw it over the fence to TravisCI and hope my config
+file hasn't broken again.
+
 1. Create a new virtual environment
-2. Install development requirements from *dev-requirements.txt*
+2. Install development requirements from *requirements.txt*
 3. Run tests  ``nosetests``
 4. `detox`_ is installed and will run the test suite across all supported python platforms
 5. `python setup.py build_sphinx` will generate documentation into *build/sphinx/html*
@@ -99,7 +106,7 @@ TL;DR
 ::
 
     $ virtualenv env
-    $ ./env/bin/pip install -qr dev-requirements.txt
+    $ ./env/bin/pip install -qr requirements.txt
     $ source env/bin/activate
     (env) $ nosetests
     (env) $ python setup.py build_sphinx
@@ -119,17 +126,25 @@ MIT
 
 .. _detox: https://testrun.org/tox/
 
-.. |Version| image:: https://badge.fury.io/py/idoneit-cli.svg?
-   :target: http://badge.fury.io/py/idoneit-cli
+.. |Version| image:: https://badge.fury.io/py/idonethis.svg?
+   :target: http://badge.fury.io/py/idonethis
 
-.. |Status| image:: https://travis-ci.org/djt5019/idoneit-cli.svg?branch=master
-   :target: https://travis-ci.org/djt5019/idoneit-cli
+.. |Status| image:: https://travis-ci.org/djt5019/idonethis.svg?branch=master
+   :target: https://travis-ci.org/djt5019/idonethis
 
-.. |Coverage| image:: https://img.shields.io/coveralls/djt5019/idoneit-cli.svg?
-   :target: https://coveralls.io/r/djt5019/idoneit-cli
+.. |Coverage| image:: https://coveralls.io/repos/djt5019/idonethis/badge.svg
+  :target: https://coveralls.io/r/djt5019/idonethis
 
-.. |Downloads| image:: https://pypip.in/d/idoneit-cli/badge.svg?
-   :target: https://pypi.python.org/pypi/idoneit-cli
+.. |Downloads| image:: https://pypip.in/d/idonethis/badge.svg?
+   :target: https://pypi.python.org/pypi/idonethis
 
-.. |License| image:: https://pypip.in/license/idoneit-cli/badge.svg?
-   :target: https://idoneit-cli.readthedocs.org
+.. |License| image:: http://img.shields.io/:license-mit-blue.svg
+   :target: http://doge.mit-license.org
+
+.. |Documentation| image:: https://readthedocs.org/projects/idonethis/badge/?version=latest
+   :target: http://idonethis.readthedocs.org/en/latest
+   :alt: Documentation Status
+
+.. |GPA| image:: https://codeclimate.com/github/djt5019/idonethis/badges/gpa.svg
+   :target: https://codeclimate.com/github/djt5019/idonethis
+   :alt: Code Climate
