@@ -7,10 +7,8 @@ import requests
 
 try:
     from unittest import mock
-    from io import StringIO
 except ImportError:
     import mock
-    from cStringIO import StringIO
 
 
 # No requests should come from Travis
