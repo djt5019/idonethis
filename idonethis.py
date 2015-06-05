@@ -83,7 +83,7 @@ def main():
     try:
         submit_done(session, team, done_text)
     except Exception as exception:
-        exit("Failed to record what you've done: {}".format(exception))
+        sys.exit("Failed to record what you've done: {}".format(exception))
 
     print("Recorded what you've done, keep up the good work!")
 

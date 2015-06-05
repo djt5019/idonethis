@@ -64,3 +64,52 @@ class TestGrabText(unittest.TestCase):
     @mock.patch('idonethis.subprocess.call')
     def test_bringing_up_an_editor(self, subprocess_call):
         self.assertEqual('Today I did... ', idonethis.get_done_text())
+
+
+class TestMainFunction(BetamaxMixn, unittest.TestCase):
+
+    @mock.patch('sys.exit')
+    @mock.patch('sys.stdin')
+    @mock.patch('idonethis.parser')
+    @mock.patch('idonethis.requests')
+    def test_no_done_text_provided_in_cli(self, requests, parser, stdin, exit_):
+        requests.Session.return_value = self.session
+        parser.parse_args.return_value = mock.Mock(
+            message=None,
+            team='aweber-be-bof',
+            token=os.environ.get('IDONETHIS_TOKEN', 'x' * 20))
+
+        stdin.isatty.return_value = False
+        stdin.read.return_value = 'testing'
+
+        with self.vcr.use_cassette('good_post_request'):
+            idonethis.main()
+
+        self.assertFalse(exit_.called)
+
+    @mock.patch('idonethis.requests')
+    @mock.patch('idonethis.parser')
+    @mock.patch('idonethis.get_done_text')
+    def test_done_text_provided_in_cli(self, get_done_text, parser, requests):
+        requests.Session.return_value = self.session
+        parser.parse_args.return_value = mock.Mock(
+            message='I did it!',
+            team='aweber-be-bof',
+            token=os.environ.get('IDONETHIS_TOKEN', 'x' * 20))
+
+        with self.vcr.use_cassette('good_post_request'):
+            idonethis.main()
+
+        self.assertFalse(get_done_text.called)
+
+    @mock.patch('sys.exit')
+    @mock.patch('idonethis.parser')
+    @mock.patch('idonethis.requests')
+    def test_unhandled_exception_occurs(self, requests, parser, exit_):
+        requests.Session.return_value = self.session
+        parser.parse_args.return_value = mock.Mock()
+
+        with self.vcr.use_cassette('good_post_request'):
+            idonethis.main()
+
+        self.assertTrue(exit_.called)
