@@ -18,10 +18,11 @@ RECORD_MODE = 'never' if os.environ.get('TRAVIS_GH3') else 'once'
 AUTH_TOKEN = 'Token ' + os.environ.get('IDONEIT_TOKEN', 'x' * 20)
 
 
-class TestSubmitDone(unittest.TestCase):
+class BetamaxMixn(object):
 
     @classmethod
     def setUpClass(cls):
+        super(BetamaxMixn, cls).setUpClass()
         cls.session = requests.Session()
         cls.session.headers = {'Authorization': AUTH_TOKEN}
         cls.vcr = betamax.Betamax(cls.session)
@@ -30,6 +31,9 @@ class TestSubmitDone(unittest.TestCase):
             config.cassette_library_dir = 'fixtures'
             config.default_cassette_options['record_mode'] = RECORD_MODE
             config.define_cassette_placeholder('Token <AUTH_TOKEN>', AUTH_TOKEN)
+
+
+class TestSubmitDone(BetamaxMixn, unittest.TestCase):
 
     def test_invalid_auth_token(self):
         self.session.headers['Authorization'] = 'Token hunter2'
