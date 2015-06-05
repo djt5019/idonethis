@@ -12,8 +12,8 @@ except ImportError:
 
 
 # No requests should come from Travis
-RECORD_MODE = 'never' if os.environ.get('TRAVIS_GH3') else 'once'
-AUTH_TOKEN = 'Token ' + os.environ.get('idonethis_TOKEN', 'x' * 20)
+RECORD_MODE = 'never' if bool(os.environ.get('TRAVIS')) else 'once'
+AUTH_TOKEN = 'Token ' + os.environ.get('IDONETHIS_TOKEN', 'x' * 20)
 
 
 class BetamaxMixn(object):
