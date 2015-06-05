@@ -1,11 +1,9 @@
 include HISTORY.rst
 include LICENSE
 include README.rst
-include dev-requirements.txt
 graft docs
 include requirements.txt
-include test-requirements.txt
-graft tests
+include tests.py
 include tox.ini
 
 global-exclude __pycache__

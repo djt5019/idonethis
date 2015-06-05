@@ -2,16 +2,9 @@
 import codecs
 import sys
 
-from setuptools import setup, find_packages
-
 import idoneit-cli
 
 
-def read_requirements_file(filename):
-    """Read pip-formatted requirements from a file."""
-    with open(filename, 'r') as f:
-        return [line.strip() for line in f.readlines()
-                if not line.startswith('#')]
 
 setup(
     name='idoneit-cli',
@@ -21,8 +14,7 @@ setup(
     test_suite='nose.collector',
     include_package_data=True,
     long_description=codecs.open('README.rst', encoding='utf-8').read(),
-    install_requires=read_requirements_file('requirements.txt'),
-    tests_require=read_requirements_file('test-requirements.txt'),
+    install_requires=['requests>=2.6.2,<3.0.0'],
     author='Dan Tracy.',
     author_email='djt5019@gmail.com',
     url='https://github.com/djt5019/idoneit-cli',
