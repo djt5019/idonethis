@@ -3,11 +3,11 @@
 import os
 import datetime
 
-from idoneit-cli import __version__
+from idoneit import __version__
 
 on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 
-project = 'idoneit-cli'
+project = 'idoneit'
 copyright = '{0.year}, Dan Tracy'.format(datetime.datetime.now())
 version = release =__version__
 
