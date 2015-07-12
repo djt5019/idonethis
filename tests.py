@@ -70,7 +70,7 @@ class TestMainFunction(BetamaxMixn, unittest.TestCase):
 
     @mock.patch('sys.exit')
     @mock.patch('sys.stdin')
-    @mock.patch('idonethis.parser')
+    @mock.patch('idonethis.main.parser')
     @mock.patch('idonethis.requests')
     def test_no_done_text_provided_in_cli(self, requests, parser, stdin, exit_):
         requests.Session.return_value = self.session
@@ -88,7 +88,7 @@ class TestMainFunction(BetamaxMixn, unittest.TestCase):
         self.assertFalse(exit_.called)
 
     @mock.patch('idonethis.requests')
-    @mock.patch('idonethis.parser')
+    @mock.patch('idonethis.main.parser')
     @mock.patch('idonethis.get_done_text')
     def test_done_text_provided_in_cli(self, get_done_text, parser, requests):
         requests.Session.return_value = self.session
@@ -103,7 +103,7 @@ class TestMainFunction(BetamaxMixn, unittest.TestCase):
         self.assertFalse(get_done_text.called)
 
     @mock.patch('sys.exit')
-    @mock.patch('idonethis.parser')
+    @mock.patch('idonethis.main.parser')
     @mock.patch('idonethis.requests')
     def test_unhandled_exception_occurs(self, requests, parser, exit_):
         requests.Session.return_value = self.session

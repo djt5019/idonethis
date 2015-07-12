@@ -13,13 +13,6 @@ import requests
 
 ROOT_URI = 'https://idonethis.com/api/v0.1/dones/'
 
-parser = argparse.ArgumentParser()
-parser.add_argument('-m', '--message', help='Content of your done')
-parser.add_argument('--team', required=True, help='Your team')
-parser.add_argument('--token', required=True,
-                    help=('Your authorization token: '
-                          'see https://idonethis.com/api/token/'))
-
 
 def get_done_text():
     """Grab input from either the users editor of choice or stdin."""
@@ -41,7 +34,7 @@ def get_done_text():
     return data
 
 
-def submit_done(session, team, done):
+def submit_done(token, team, done):
     """Submit the users done and bask in the glory of productivity.
 
     :param Session session: A `requests_` session object.
@@ -49,6 +42,11 @@ def submit_done(session, team, done):
     :param str done: Description of what was accomplished.
 
     """
+    
+    # Seed the Authorization headers for all subsequent requests
+    session = requests.Session()
+    session.headers['Authorization'] = 'Token {}'.format(token)
+    
     post_data = {'raw_text': done, 'team': team}
     response = session.post(ROOT_URI, json=post_data)
 
@@ -68,20 +66,22 @@ def submit_done(session, team, done):
 
 def main():
     """The main entry point for the application."""
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-m', '--message', help='Content of your done')
+    parser.add_argument('--team', required=True, help='Your team')
+    parser.add_argument('--token', required=True,
+                        help=('Your authorization token: '
+                            'see https://idonethis.com/api/token/'))
     args = parser.parse_args()
     token = args.token
     team = args.team
     done_text = args.message
 
-    # Seed the Authorization headers for all subsequent requests
-    session = requests.Session()
-    session.headers['Authorization'] = 'Token {}'.format(token)
-
     if not done_text:
         done_text = get_done_text()
 
     try:
-        submit_done(session, team, done_text)
+        submit_done(token, team, done_text)
     except Exception as exception:
         sys.exit("Failed to record what you've done: {}".format(exception))
 
