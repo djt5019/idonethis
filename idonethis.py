@@ -102,12 +102,23 @@ def build_parser():
         'Your authorization token: see https://idonethis.com/api/token/'))
     return parser
 
+
+def read_cli(parser):
+    """Read the CLI arguments from the parser and return a dictionary."""
     args = parser.parse_args()
     token = args.token
     team = args.team
     done_text = args.message
 
     done = DoneApi(token, team)
+    config_path = args.config
+    if not config_path:
+        home_dir = os.path.expanduser('~')
+        config_path = os.path.join(home_dir, '.idonethis.json')
+
+    return {'team': args.team, 'token': args.token,
+            'config': config_path, 'message': args.message}
+
 
     if not done_text:
         done_text = get_done_text()
