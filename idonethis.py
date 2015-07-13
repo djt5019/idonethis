@@ -73,6 +73,19 @@ def get_done_text():
 
 def main():
     """The main entry point for the application."""
+def read_config(path):
+    """Read and return the config or an empty dictionary if something breaks
+
+    :param str pathlib.Path: The pathlib object for your config file.
+
+    """
+    try:
+        with path.open() as config:
+            config = json.load(config)
+            return {'team': config['team'], 'token': config['token']}
+    except Exception:
+        return {}
+
     parser = argparse.ArgumentParser()
     parser.add_argument('-m', '--message', help='Content of your done')
     parser.add_argument('--team', required=True, help='Your team')

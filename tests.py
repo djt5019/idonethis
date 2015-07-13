@@ -7,8 +7,10 @@ import requests
 
 try:
     from unittest import mock
+    from io import StringIO
 except ImportError:
     import mock
+    from cStringIO import StringIO
 
 # No requests should come from Travis
 RECORD_MODE = 'never' if bool(os.environ.get('TRAVIS')) else 'once'
@@ -117,3 +119,17 @@ class TestMainFunction(BetamaxMixn, unittest.TestCase):
             idonethis.main()
 
         self.assertTrue(exit_.called)
+
+
+class TestReadingAConfigFile(unittest.TestCase):
+
+    def test_path_exists(self):
+        config_file = StringIO('{"token": "foo", "team": "bar"}')
+        path = mock.MagicMock()
+        path.open.return_value.__enter__.return_value = config_file
+        config = idonethis.read_config(path)
+        self.assertEqual({'token': u'foo', 'team': u'bar'}, config)
+
+    def test_reading_config_fails(self):
+        config = idonethis.read_config(None)
+        self.assertEqual(config, {})
