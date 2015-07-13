@@ -117,8 +117,12 @@ def main():
     parser = build_parser()
     args = read_cli(parser)
 
-    path = pathlib.Path(args['config']).resolve()
-    config = read_config(path)
+    path = pathlib.Path(args['config'])
+    try:
+        path = path.resolve()
+        config = read_config(path)
+    except OSError:
+        config = {}
 
     # Prefer the CLI over the config file for Token and Team information.
     token = args.get('token', config.get('token'))
