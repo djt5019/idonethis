@@ -86,12 +86,22 @@ def read_config(path):
     except Exception:
         return {}
 
+
+def build_parser():
+    """Build and return an ArgumentParser."""
     parser = argparse.ArgumentParser()
     parser.add_argument('-m', '--message', help='Content of your done')
     parser.add_argument('--team', required=True, help='Your team')
     parser.add_argument('--token', required=True,
                         help=('Your authorization token: '
                             'see https://idonethis.com/api/token/'))
+    parser.add_argument('-c', '--config', help=(
+        'Config file to load, default is your home directory'))
+    parser.add_argument('--team', help='Your team')
+    parser.add_argument('--token', help=(
+        'Your authorization token: see https://idonethis.com/api/token/'))
+    return parser
+
     args = parser.parse_args()
     token = args.token
     team = args.team
