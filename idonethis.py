@@ -14,6 +14,43 @@ import requests
 ROOT_URI = 'https://idonethis.com/api/v0.1/dones/'
 
 
+class DoneApi(object):
+    """Wrapper around some of the functionality provided by idonethis.
+
+    :param str token: Your authorization token for the API
+    :param str team: Name of the team to the user did something on.
+
+    """
+
+    def __init__(self, token, team):
+        self.team = team
+        self.session = requests.Session()
+        self.session.headers['Authorization'] = 'Token {}'.format(token)
+
+    def submit_done(self, done):
+        """Submit the users done and bask in the glory of productivity.
+
+        :param str done: Description of what was accomplished.
+
+        """
+        post_data = {'raw_text': done, 'team': self.team}
+        response = self.session.post(ROOT_URI, json=post_data)
+
+        if response.ok:
+            return
+
+        if response.status_code not in (400, 401):
+            response.raise_for_status()
+
+        payload = response.json()
+
+        if 'errors' in payload and 'team' in payload['errors']:
+            raise ValueError("You aren't a part of the '{}' team".format(self.team))
+        else:
+            raise ValueError(payload['detail'])
+
+
+
 def get_done_text():
     """Grab input from either the users editor of choice or stdin."""
     if not sys.stdin.isatty():
@@ -34,36 +71,6 @@ def get_done_text():
     return data
 
 
-def submit_done(token, team, done):
-    """Submit the users done and bask in the glory of productivity.
-
-    :param Session session: A `requests_` session object.
-    :param str team: Name of the team to the user did something on.
-    :param str done: Description of what was accomplished.
-
-    """
-    
-    # Seed the Authorization headers for all subsequent requests
-    session = requests.Session()
-    session.headers['Authorization'] = 'Token {}'.format(token)
-    
-    post_data = {'raw_text': done, 'team': team}
-    response = session.post(ROOT_URI, json=post_data)
-
-    if response.ok:
-        return
-
-    if response.status_code not in (400, 401):
-        response.raise_for_status()
-
-    payload = response.json()
-
-    if 'errors' in payload and 'team' in payload['errors']:
-        raise ValueError("You aren't a part of the '{}' team".format(team))
-    else:
-        raise ValueError(payload['detail'])
-
-
 def main():
     """The main entry point for the application."""
     parser = argparse.ArgumentParser()
@@ -77,11 +84,13 @@ def main():
     team = args.team
     done_text = args.message
 
+    done = DoneApi(token, team)
+
     if not done_text:
         done_text = get_done_text()
 
     try:
-        submit_done(token, team, done_text)
+        done.submit_done(done_text)
     except Exception as exception:
         sys.exit("Failed to record what you've done: {}".format(exception))
 

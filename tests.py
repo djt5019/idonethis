@@ -10,7 +10,6 @@ try:
 except ImportError:
     import mock
 
-
 # No requests should come from Travis
 RECORD_MODE = 'never' if bool(os.environ.get('TRAVIS')) else 'once'
 AUTH_TOKEN = 'Token ' + os.environ.get('IDONETHIS_TOKEN', 'x' * 20)
@@ -18,9 +17,8 @@ AUTH_TOKEN = 'Token ' + os.environ.get('IDONETHIS_TOKEN', 'x' * 20)
 
 class BetamaxMixn(object):
 
-    @classmethod
-    def setUpClass(cls):
-        super(BetamaxMixn, cls).setUpClass()
+    def setUp(cls):
+        super(BetamaxMixn, cls).setUp()
         cls.session = requests.Session()
         cls.session.headers = {'Authorization': AUTH_TOKEN}
         cls.vcr = betamax.Betamax(cls.session)
@@ -34,23 +32,26 @@ class BetamaxMixn(object):
 
 class TestSubmitDone(BetamaxMixn, unittest.TestCase):
 
-    def test_invalid_auth_token(self):
+    def setUp(self):
+        super(TestSubmitDone, self).setUp()
         self.session.headers['Authorization'] = 'Token hunter2'
+        self.api = idonethis.DoneApi('hunter2', 'team')
+        self.api.session = self.session
 
+    def test_invalid_auth_token(self):
         with self.assertRaises(ValueError):
             with self.vcr.use_cassette('bad_auth_token'):
-                idonethis.submit_done(self.session, 'team', 'done')
-
-        self.session.headers['Authorization'] = AUTH_TOKEN
+                self.api.submit_done('done')
 
     def test_using_the_wrong_team(self):
         with self.assertRaises(ValueError):
             with self.vcr.use_cassette('bad_team'):
-                idonethis.submit_done(self.session, 'team', 'done')
+                self.api.submit_done('done')
 
     def test_a_good_request(self):
+        self.api.team = 'aweber-be-bof'
         with self.vcr.use_cassette('good_post_request'):
-            idonethis.submit_done(self.session, 'aweber-be-bof', 'I did it!')
+            self.api.submit_done('I did it!')
 
 
 class TestGrabText(unittest.TestCase):
@@ -70,10 +71,11 @@ class TestMainFunction(BetamaxMixn, unittest.TestCase):
 
     @mock.patch('sys.exit')
     @mock.patch('sys.stdin')
-    @mock.patch('idonethis.main.parser')
+    @mock.patch('idonethis.argparse')
     @mock.patch('idonethis.requests')
-    def test_no_done_text_provided_in_cli(self, requests, parser, stdin, exit_):
+    def test_no_done_text_provided_in_cli(self, requests, argparse, stdin, exit_):
         requests.Session.return_value = self.session
+        parser = argparse.ArgumentParser.return_value
         parser.parse_args.return_value = mock.Mock(
             message=None,
             team='aweber-be-bof',
@@ -88,10 +90,11 @@ class TestMainFunction(BetamaxMixn, unittest.TestCase):
         self.assertFalse(exit_.called)
 
     @mock.patch('idonethis.requests')
-    @mock.patch('idonethis.main.parser')
+    @mock.patch('idonethis.argparse')
     @mock.patch('idonethis.get_done_text')
-    def test_done_text_provided_in_cli(self, get_done_text, parser, requests):
+    def test_done_text_provided_in_cli(self, get_done_text, argparse, requests):
         requests.Session.return_value = self.session
+        parser = argparse.ArgumentParser.return_value
         parser.parse_args.return_value = mock.Mock(
             message='I did it!',
             team='aweber-be-bof',
@@ -103,10 +106,11 @@ class TestMainFunction(BetamaxMixn, unittest.TestCase):
         self.assertFalse(get_done_text.called)
 
     @mock.patch('sys.exit')
-    @mock.patch('idonethis.main.parser')
+    @mock.patch('idonethis.argparse')
     @mock.patch('idonethis.requests')
-    def test_unhandled_exception_occurs(self, requests, parser, exit_):
+    def test_unhandled_exception_occurs(self, requests, argparse, exit_):
         requests.Session.return_value = self.session
+        parser = argparse.ArgumentParser.return_value
         parser.parse_args.return_value = mock.Mock()
 
         with self.vcr.use_cassette('good_post_request'):
