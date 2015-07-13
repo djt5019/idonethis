@@ -86,6 +86,32 @@ You can install this off of PyPI using PIP.
 .. include:: contributing.rst
 
 
+Config File
+-----------
+
+By default a config file located in ``$HOME/.idonethis.json`` is loaded if
+it exists.  If you have a config file elsewhere, or if you're a fancy pants
+and use ``$XDG_CONFIG_HOME``, you can provide it using the ``-c`` flag to
+the CLI.
+
+.. warning::
+
+  Arguments proivided in the CLI will always take higher precedence than those
+  in the config file.
+
+
+Config Format
++++++++++++++
+
+::
+
+  {
+    "token": "hom3r",
+    "team": "Springfield Isotopes"
+  }
+
+
+
 Development
 -----------
 
