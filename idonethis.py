@@ -125,8 +125,8 @@ def main():
         config = {}
 
     # Prefer the CLI over the config file for Token and Team information.
-    token = args.get('token', config.get('token'))
-    team = args.get('team', config.get('team'))
+    token = args.get('token') or config.get('token')
+    team = args.get('team') or config.get('team')
 
     if not token:
         parser.error("Couldn't find a token in your config '{}'".format(path))
