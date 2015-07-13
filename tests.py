@@ -1,3 +1,4 @@
+import json
 import os
 import unittest
 
@@ -7,9 +8,12 @@ import requests
 
 try:
     from unittest import mock
-    from io import StringIO
 except ImportError:
     import mock
+
+try:
+    from io import StringIO
+except ImportError:
     from cStringIO import StringIO
 
 # No requests should come from Travis
@@ -127,11 +131,12 @@ class TestMainFunction(BetamaxMixn, unittest.TestCase):
 class TestReadingAConfigFile(unittest.TestCase):
 
     def test_path_exists(self):
-        config_file = StringIO('{"token": "foo", "team": "bar"}')
+        cfg = json.dumps({"token": "foo", "team": "bar"})
+        config_file = StringIO(cfg.encode('utf8').decode())
         path = mock.MagicMock()
         path.open.return_value.__enter__.return_value = config_file
         config = idonethis.read_config(path)
-        self.assertEqual({'token': u'foo', 'team': u'bar'}, config)
+        self.assertEqual({'token': 'foo', 'team': 'bar'}, config)
 
     def test_reading_config_fails(self):
         config = idonethis.read_config(None)
