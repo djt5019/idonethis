@@ -13,7 +13,7 @@ setup(
     test_suite='nose.collector',
     include_package_data=True,
     long_description=codecs.open('README.rst', encoding='utf-8').read(),
-    install_requires=['requests>=2.6.2,<3.0.0'],
+    install_requires=['requests>=2.6.2,<3.0.0', 'pathlib>=1.0.0,<2.0.0'],
     author='Dan Tracy.',
     author_email='djt5019@gmail.com',
     url='https://github.com/djt5019/idonethis',
