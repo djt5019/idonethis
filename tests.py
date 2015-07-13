@@ -81,7 +81,8 @@ class TestMainFunction(BetamaxMixn, unittest.TestCase):
         parser.parse_args.return_value = mock.Mock(
             message=None,
             team='aweber-be-bof',
-            token=os.environ.get('IDONETHIS_TOKEN', 'x' * 20))
+            token=os.environ.get('IDONETHIS_TOKEN', 'x' * 20),
+            config='fixtures/good_config.json')
 
         stdin.isatty.return_value = False
         stdin.read.return_value = 'testing'
@@ -100,7 +101,8 @@ class TestMainFunction(BetamaxMixn, unittest.TestCase):
         parser.parse_args.return_value = mock.Mock(
             message='I did it!',
             team='aweber-be-bof',
-            token=os.environ.get('IDONETHIS_TOKEN', 'x' * 20))
+            token=os.environ.get('IDONETHIS_TOKEN', 'x' * 20),
+            config='fixtures/good_config.json')
 
         with self.vcr.use_cassette('good_post_request'):
             idonethis.main()
@@ -113,7 +115,8 @@ class TestMainFunction(BetamaxMixn, unittest.TestCase):
     def test_unhandled_exception_occurs(self, requests, argparse, exit_):
         requests.Session.return_value = self.session
         parser = argparse.ArgumentParser.return_value
-        parser.parse_args.return_value = mock.Mock()
+        parser.parse_args.return_value = mock.Mock(
+            config='fixtures/good_config.json')
 
         with self.vcr.use_cassette('good_post_request'):
             idonethis.main()

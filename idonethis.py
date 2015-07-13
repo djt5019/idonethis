@@ -8,6 +8,7 @@ import subprocess
 import sys
 import tempfile
 
+import pathlib
 import argparse
 import requests
 
@@ -46,10 +47,10 @@ class DoneApi(object):
         payload = response.json()
 
         if 'errors' in payload and 'team' in payload['errors']:
-            raise ValueError("You aren't a part of the '{}' team".format(self.team))
+            raise ValueError(
+                "You aren't a part of the '{}' team".format(self.team))
         else:
             raise ValueError(payload['detail'])
-
 
 
 def get_done_text():
@@ -72,8 +73,6 @@ def get_done_text():
     return data
 
 
-def main():
-    """The main entry point for the application."""
 def read_config(path):
     """Read and return the config or an empty dictionary if something breaks
 
@@ -92,10 +91,6 @@ def build_parser():
     """Build and return an ArgumentParser."""
     parser = argparse.ArgumentParser()
     parser.add_argument('-m', '--message', help='Content of your done')
-    parser.add_argument('--team', required=True, help='Your team')
-    parser.add_argument('--token', required=True,
-                        help=('Your authorization token: '
-                            'see https://idonethis.com/api/token/'))
     parser.add_argument('-c', '--config', help=(
         'Config file to load, default is your home directory'))
     parser.add_argument('--team', help='Your team')
@@ -107,11 +102,7 @@ def build_parser():
 def read_cli(parser):
     """Read the CLI arguments from the parser and return a dictionary."""
     args = parser.parse_args()
-    token = args.token
-    team = args.team
-    done_text = args.message
 
-    done = DoneApi(token, team)
     config_path = args.config
     if not config_path:
         home_dir = os.path.expanduser('~')
@@ -121,9 +112,27 @@ def read_cli(parser):
             'config': config_path, 'message': args.message}
 
 
-    if not done_text:
-        done_text = get_done_text()
+def main():
+    """The main entry point for the application."""
+    parser = build_parser()
+    args = read_cli(parser)
 
+    path = pathlib.Path(args['config']).resolve()
+    config = read_config(path)
+
+    # Prefer the CLI over the config file for Token and Team information.
+    token = args.get('token', config.get('token'))
+    team = args.get('team', config.get('team'))
+
+    if not token:
+        parser.error("Couldn't find a token in your config '{}'".format(path))
+
+    if not team:
+        parser.error("Couldn't find a team in your config '{}'".format(path))
+
+    done = DoneApi(token, team)
+
+    done_text = args['message'] or get_done_text()
     try:
         done.submit_done(done_text)
     except Exception as exception:
